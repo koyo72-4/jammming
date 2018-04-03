@@ -1,5 +1,5 @@
 import React from 'react';
-import ResultSong from '../ResultSong/ResultSong';
+import TrackList from '../TrackList/TrackList';
 import './ResultsList.css';
 
 class ResultsList extends React.Component {
@@ -7,17 +7,10 @@ class ResultsList extends React.Component {
     return (
       <div className="SearchResults">
         <h2>Results</h2>
-        <div className="TrackList">
-          {
-            this.props.results.map(result => {
-              return (
-                <ResultSong
-                  key={result.song}
-                  result={result} />
-              );
-            })
-          }
-        </div>
+        <TrackList
+          tracks={this.props.results}
+          isRemoval={false}
+          onAdd={this.props.onAdd} />
       </div>
     );
   }

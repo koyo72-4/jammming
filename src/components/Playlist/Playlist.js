@@ -1,29 +1,34 @@
 import React from 'react';
 import './Playlist.css';
-import PlaylistSong from '../PlaylistSong/PlaylistSong';
+import TrackList from '../TrackList/TrackList';
 
 class Playlist extends React.Component {
+  constructor(props) {
+    super(props);
+    this.changeName = this.changeName.bind(this);
+  }
+
+  changeName(event) {
+    this.props.changeName(event.target.value);
+  }
+
   render() {
     return (
       <div className="Playlist">
-        <input value='New Playlist' />
-        <div className="TrackList">
-          {
-            this.props.playlistSongs.map(playlistSong => {
-              return (
-                <PlaylistSong
-                  key={playlistSong.song}
-                  playlistSong={playlistSong} />
-              );
-            })
-          }
-        </div>
-        <a className="Playlist-save">SAVE TO SPOTIFY</a>
+        <input
+          value={this.props.playlistName}
+          defaultValue={'My Awesome Playlist'}
+          onChange={this.changeName} />
+        <TrackList
+          tracks={this.props.playlistSongs}
+          isRemoval={true}
+          onRemove={this.props.onRemove} />
+        <a
+          className="Playlist-save"
+          onClick={this.props.onSave}>
+          SAVE TO SPOTIFY
+        </a>
       </div>
-
-
-
-
     );
   }
 }
