@@ -1,8 +1,5 @@
 import React from 'react';
 import './SearchBar.css';
-import { clientId } from '../../util/Secrets';
-
-const redirectUri = 'http://localhost:2000';
 
 class SearchBar extends React.Component {
   constructor(props) {
@@ -12,11 +9,6 @@ class SearchBar extends React.Component {
     this.search = this.search.bind(this);
     this.handleTermChange = this.handleTermChange.bind(this);
   }
-  /*
-  handleSearch(event) {
-    this.props.login();
-  }
-  */
 
   search() {
     this.props.onSearch(this.state.term);
@@ -34,7 +26,7 @@ class SearchBar extends React.Component {
           value={this.state.term}
           onChange={this.handleTermChange} />
         <a
-          href={`https://cors-anywhere.herokuapp.com/https://accounts.spotify.com/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=user-read-private&response_type=token`}>
+          onClick={this.search}>
           SEARCH
         </a>
       </div>

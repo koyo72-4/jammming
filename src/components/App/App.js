@@ -29,12 +29,6 @@ class App extends Component {
           artist: "Genesis",
           album: "Foxtrot",
           id: "Supper's Ready"
-        },
-        {
-          name: "Second Song",
-          artist: "Second Artist",
-          album: "Second Album",
-          id: "Second Song"
         }
       ],
       playlistName: 'My Awesome Playlist'
@@ -70,11 +64,16 @@ class App extends Component {
 
   savePlaylist() {
     let trackURIs = this.state.playlistSongs.map(song => song.uri);
+    Spotify.savePlaylist(this.state.playlistName, trackURIs).then(playlistId => {
+      this.setState({ playlistName: 'New Playlist', playlistSongs: [] });
+    });
   }
 
   search(term) {
     console.log(term);
-    Spotify.search(term);
+    Spotify.search(term).then(tracks => {
+      this.setState({ results: tracks });
+    });
   }
 
   render() {
