@@ -53,6 +53,7 @@ const Spotify = {
     });
   },
 
+/*
   savePlaylist(playlistName, trackUris) {
     const accessToken = this.getAccessToken();
     console.log("access token received by savePlaylist method: ", accessToken);
@@ -105,6 +106,40 @@ const Spotify = {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ uris: trackUris })
+      });
+    });
+  }
+  */
+    savePlaylist(name, trackUris) {
+    if (!name || !trackUris.length) {
+      return;
+    }
+
+    const accessToken = Spotify.getAccessToken();
+    const headers = { Authorization: `Bearer ${accessToken}` };
+    //let userId;
+
+    return fetch('https://api.spotify.com/v1/me', {headers: headers}
+    ).then(response => response.json()
+    ).then(jsonResponse => {
+      // take just the user ID returned by Spotify
+      const userId = jsonResponse.id;
+
+      return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+        headers: headers,
+        method: 'POST',
+        body: JSON.stringify({name: name}) // sending the name of the playlist with a key 'name'
+      }).then(response => response.json()
+      ).then(jsonResponse => {
+        // got a playlist id for the new playlist that was just created from spotify
+        const playlistId = jsonResponse.id;
+
+        // ready to send the tracks to spotify for the stored playlist
+        return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`, {
+          headers: headers,
+          method: 'POST',
+          body: JSON.stringify({uris: trackUris})
+        });
       });
     });
   }
