@@ -13,6 +13,8 @@ const Spotify = {
     const urlAccessToken = window.location.href.match(/access_token=([^&]*)/);
     const urlExpiresIn = window.location.href.match(/expires_in=([^&]*)/);
     if (urlAccessToken && urlExpiresIn) {
+      console.log('urlAccessToken:', urlAccessToken);
+      console.log('urlExpiresIn', urlExpiresIn);
       accessToken = urlAccessToken[1];
       const expiresIn = Number(urlExpiresIn[1]);
       console.log(accessToken);
@@ -37,7 +39,9 @@ const Spotify = {
     })
     .then(jsonResponse => {
       console.log(jsonResponse);
-      if (jsonResponse.tracks) {
+      if (!jsonResponse.tracks) {
+        return [];
+      } else {
         return jsonResponse.tracks.items.map(track => {
           return {
             id: track.id,
@@ -47,8 +51,6 @@ const Spotify = {
             uri: track.uri
           };
         });
-      } else {
-        return [];
       }
     });
   },
